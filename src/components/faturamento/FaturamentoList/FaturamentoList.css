@@ -1,0 +1,73 @@
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+.faturamento-container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.faturamento-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.select-faturamento {
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+    height: 40px;
+}
+
+.select-faturamento:focus{
+    border-bottom: 0 transparent;
+}
+
+.faturamento-table th, .faturamento-table td {
+    padding: 15px;
+    border-bottom: 1px solid #ffffff;
+    text-align: left;
+}
+
+.faturamento-table th {
+    background-color: #ffffff;
+}
+
+.status-pending {
+    background-color: yellow;
+    color: black;
+    padding: 5px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.status-billed {
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 15px;
+    text-align: center;
+}

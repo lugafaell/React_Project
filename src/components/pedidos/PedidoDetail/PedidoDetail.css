@@ -1,0 +1,324 @@
+.pedido-detail {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: #575757;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.3s ease-in-out;
+}
+
+.pedido-detail ul li {
+    display: block;
+    background-color: #787878;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    color: #fff;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.pedido-detail ul li:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.input-link {
+    padding: 10px;
+    border: none;
+    background-color: #575757;
+    border-bottom: 2px solid #ffffff;
+    border-radius: 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    color: white;
+    height: 40px;
+}
+
+.input-link:focus {
+    border-bottom: 2px solid #000000;
+}
+
+.pedido-detail-input {
+    text-align: right;
+    width: 40%;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.pedido-detail-input:focus {
+    border-color: black;
+}
+
+.pedido-detail.open {
+    right: 0;
+}
+
+.pedido-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #575757;
+    text-shadow: 0 4px 6px rgb(46, 46, 46);
+    color: #fff;
+    font-weight: bold;
+}
+
+.pedido-detail-title {
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
+.pedido-detail-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.pedido-detail-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.pedido-detail-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.pedido-detail-field {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pedido-detail-field .label {
+    text-shadow: 0 2px 4px rgb(46, 46, 46);
+    font-weight: bold;
+    color: white;
+    flex: 1;
+}
+
+.pedido-detail-field span {
+    display: block;
+    padding: 15px;
+    background-color: transparent;
+    color: #fff;
+    text-align: right;
+    flex: 2;
+}
+
+.edit-button {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    color: lightgray;
+}
+
+.pedido-detail-attachments {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.pedido-detail-attachments label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #575757;
+    color: #ffffff;
+    border: 1px solid #575757;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.pedido-detail-attachments label:hover {
+    background-color: #727171;
+}
+
+.pedido-detail-attachments label input[type="file"] {
+    display: none;
+}
+
+.pedido-detail-attachments label .icon {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    color: #575757;
+    background-color: white;
+    box-shadow: 0 2px 4px rgb(46, 46, 46);
+    border-radius: 5px;
+}
+
+.pedido-detail-attachments label .icon-checked {
+    color: rgb(255, 255, 255);
+    background-color: #28a745;
+}
+
+.pedido-detail-attachments label .icon-checked::before {
+    content: '✓';
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.pedido-detail-attachments .attachment-checked {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.pedido-detail-attachments .icon-delete {
+    font-size: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #575757;
+}
+
+.pedido-detail-attachments .icon-delete:hover {
+    color: red;
+}
+
+.pedido-detail-faturamento button {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgb(46, 46, 46);
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.pedido-detail-equipamentos-materiais {
+    margin-top: 20px;
+}
+
+.pedido-detail-equipamentos-materiais button {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pedido-detail-equipamentos-materiais-content {
+    background-color: #686868;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.pedido-detail-field-matsequip ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 40px;
+}
+
+.pedido-detail-field-matsequip ul li {
+    display: block;
+    background-color: #787878;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.pedido-detail-field-matsequip ul li:hover::after {
+    content: attr(data-full-text);
+    position: fixed;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    top: 30%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    white-space: normal;
+    z-index: 10;
+    width: max-content;
+    max-width: 200px;
+    text-align: center;
+}
+
+.icon{
+    font-size: 20px;
+    color: white;
+}

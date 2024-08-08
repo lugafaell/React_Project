@@ -1,0 +1,156 @@
+.pedidos-list {
+    padding: 20px;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-bar {
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-bottom: 2px solid #949292;
+    color: black;
+}
+
+.search-bar::placeholder {
+    color: black;
+}
+
+.search-bar:focus {
+    border-bottom: 2px solid #000000;
+}
+
+.pedidos-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+.status-header {
+    width: 20px;
+    margin-right: 5px;
+}
+
+.pedido-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.pedido-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pedido-item:hover {
+    background-color: #d4d4d4;
+}
+
+.pedido-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.pedido-paciente {
+    flex: 0 0 200px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-right: 40px;
+    margin-left: 40px;
+    text-align: left;
+}
+
+.pedido-data, .pedido-hospital, .pedido-tipo, .pedido-medico {
+    flex: 1;
+    text-align: center;
+    margin-left: -60px;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.pedido-paciente:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.status-container {
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.status-indicator.red {
+    background-color: red;
+}
+
+.status-indicator.green {
+    background-color: green;
+}
+
+.status-indicator.yellow {
+    background-color: yellow;
+}
+
+@media (max-width: 768px) {
+    .pedidos-header, .pedido-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pedidos-header > div, .pedido-info > div {
+        flex: none;
+        width: 100%;
+        margin-left: 40px;
+        margin-right: 0;
+        text-align: left;
+    }
+
+    .pedido-paciente {
+        margin-bottom: 10px;
+    }
+
+    .header-item {
+        margin-left: 0;
+    }
+}
