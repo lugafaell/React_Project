@@ -48,25 +48,3 @@ cd src/api
 node index.js
 
 The server will start on (http://localhost:8080) or the port specified in your index.js file.
-
-### `Learn More`
-
-You can learn more in the [Create React App documentation](https://create-react-app.dev/).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### `Code Splitting`
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
