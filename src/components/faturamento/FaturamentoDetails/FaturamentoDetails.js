@@ -5,6 +5,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { FiExternalLink, FiEdit } from 'react-icons/fi';
 import { AiOutlineDownload, AiFillDelete } from 'react-icons/ai';
 import CustomCheckbox from '../../checkbox/CustomCheckbox';
+import CustomAlert from '../../alert/CustomAlert';
 
 const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
     const styles = useSpring({
@@ -17,6 +18,7 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
     const [isEditingMotivo, setIsEditingMotivo] = useState(false);
     const [status, setStatus] = useState(faturamento.status);
     const [motivo, setMotivo] = useState(faturamento.motivo);
+    const [alert, setAlert] = useState({ message: '', type: '', visible: false });
 
     const handleCheckboxChange = (itemName, index) => {
         setCheckedItems((prev) => ({
@@ -45,6 +47,7 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
             if (response.ok) {
                 setIsEditingStatus(false);
                 onUpdate({ ...faturamento, status });
+                setAlert({ message: "Faturamento Atualizado com sucesso!", type: 'success', visible: true });
             } else {
                 alert('Erro ao salvar o status.');
             }
@@ -66,6 +69,7 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
             if (response.ok) {
                 setIsEditingMotivo(false);
                 onUpdate({ ...faturamento, motivo });
+                setAlert({ message: "Faturamento Atualizado com sucesso!", type: 'success', visible: true });
             } else {
                 alert('Erro ao salvar o motivo.');
             }
@@ -243,6 +247,13 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
                         {renderBase64Content(faturamento.imagemComunicado64, 'nota-comunicado', 'Comuni. de Uso')}
                     </div>
                 </Collapsible>
+                {alert.visible && (
+                <CustomAlert 
+                    message={alert.message}
+                    type={alert.type}
+                    onClose={() => setAlert({ ...alert, visible: false })}
+                />
+            )}
             </animated.div>
         </div>
     );
