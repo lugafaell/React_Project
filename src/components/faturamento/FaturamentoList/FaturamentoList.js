@@ -51,6 +51,15 @@ const FaturamentoList = () => {
         setAlert({ message: 'Faturamento removido com sucesso!', type: 'success', visible: true });
     };
 
+    const handleFaturamentoUpdate = (updatedFaturamento) => {
+        setFaturamentoData((prevData) =>
+            prevData.map((item) =>
+                item._id === updatedFaturamento._id ? updatedFaturamento : item
+            )
+        );
+        setSelectedFaturamento(updatedFaturamento);
+    };
+
     return (
         <div>
             <Navbar />
@@ -103,6 +112,7 @@ const FaturamentoList = () => {
                     faturamento={selectedFaturamento} 
                     onClose={() => setSelectedFaturamento(null)}
                     onDelete={handleFaturamentoDelete}
+                    onUpdate={handleFaturamentoUpdate}
                 />
             )}
         </div>

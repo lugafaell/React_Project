@@ -39,6 +39,24 @@
     z-index: 1000;
 }
 
+.input-edit {
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid #686868;
+    border-radius: 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+    height: 40px;
+}
+
+.input-edit:focus{
+    border-bottom: 2px solid #000000;
+}
+
 .close-button {
     position: absolute;
     top: 10px;
@@ -68,6 +86,18 @@
 
 .delete-button svg {
     margin-left: 5px;
+}
+
+.edit-button{
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+
+.edit-button:hover{
+    color: rgb(99, 99, 99);
 }
 
 .collapsible-item {

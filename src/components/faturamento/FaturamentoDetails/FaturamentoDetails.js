@@ -2,23 +2,77 @@ import React, { useState } from 'react';
 import Collapsible from 'react-collapsible';
 import './FaturamentoDetails.css';
 import { useSpring, animated } from '@react-spring/web';
-import { FiExternalLink } from 'react-icons/fi';
+import { FiExternalLink, FiEdit } from 'react-icons/fi';
 import { AiOutlineDownload, AiFillDelete } from 'react-icons/ai';
 import CustomCheckbox from '../../checkbox/CustomCheckbox';
 
-const FaturamentoDetails = ({ faturamento, onClose, onDelete }) => {
+const FaturamentoDetails = ({ faturamento, onClose, onDelete, onUpdate }) => {
     const styles = useSpring({
         from: { opacity: 0, transform: 'scale(0.9)' },
         to: { opacity: 1, transform: 'scale(1)' },
     });
 
     const [checkedItems, setCheckedItems] = useState({});
+    const [isEditingStatus, setIsEditingStatus] = useState(false);
+    const [isEditingMotivo, setIsEditingMotivo] = useState(false);
+    const [status, setStatus] = useState(faturamento.status);
+    const [motivo, setMotivo] = useState(faturamento.motivo);
 
     const handleCheckboxChange = (itemName, index) => {
         setCheckedItems((prev) => ({
             ...prev,
             [itemName + index]: !prev[itemName + index],
         }));
+    };
+
+    const handleEditStatus = () => {
+        setIsEditingStatus(!isEditingStatus);
+    };
+
+    const handleEditMotivo = () => {
+        setIsEditingMotivo(!isEditingMotivo);
+    };
+
+    const saveStatus = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/faturamento/atualizarFaturamento/${faturamento._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status }),
+            });
+            if (response.ok) {
+                setIsEditingStatus(false);
+                onUpdate({ ...faturamento, status });
+            } else {
+                alert('Erro ao salvar o status.');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar o status:', error);
+            alert('Erro ao salvar o status.');
+        }
+    };
+
+    const saveMotivo = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/faturamento/atualizarFaturamento/${faturamento._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ motivo }),
+            });
+            if (response.ok) {
+                setIsEditingMotivo(false);
+                onUpdate({ ...faturamento, motivo });
+            } else {
+                alert('Erro ao salvar o motivo.');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar o motivo:', error);
+            alert('Erro ao salvar o motivo.');
+        }
     };
 
     const renderItems = (items) => {
@@ -90,7 +144,7 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete }) => {
                 method: 'DELETE',
             });
             if (response.ok) {
-                onDelete(faturamento._id)
+                onDelete(faturamento._id);
                 onClose();
             } else {
                 alert('Erro ao remover o faturamento.');
@@ -118,8 +172,56 @@ const FaturamentoDetails = ({ faturamento, onClose, onDelete }) => {
                 <p><strong>Nome do Paciente:</strong> {faturamento.nomePaciente}</p>
                 <p><strong>Data do Procedimento:</strong> {faturamento.dataProcedimento}</p>
                 <p><strong>Hospital:</strong> {faturamento.hospital}</p>
-                <p><strong>Status:</strong> {faturamento.status}</p>
-                <p><strong>Motivo:</strong> {faturamento.motivo}</p>
+                <p><strong>Status:</strong>
+                    {isEditingStatus ? (
+                        <select
+                            className="input-edit"
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    saveStatus();
+                                }
+                            }}
+                            autoFocus
+                        >
+                            <option value="FATURADO">FATURADO</option>
+                            <option value="AGUARDANDO AUTORIZAÇÃO">AGUARDANDO AUTORIZAÇÃO</option>
+                        </select>
+                    ) : (
+                        <>
+                            {status}
+                            <button onClick={handleEditStatus} className="edit-button">
+                                <FiEdit />
+                            </button>
+                        </>
+                    )}
+                </p>
+                <p><strong>Motivo:</strong>
+                    {isEditingMotivo ? (
+                        <select
+                            className="input-edit"
+                            value={motivo}
+                            onChange={(e) => setMotivo(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    saveMotivo();
+                                }
+                            }}
+                            autoFocus
+                        >
+                            <option value="FINALIZADO">FINALIZADO</option>
+                            <option value="COMUNICADO DE USO(ITMF)">COMUNICADO DE USO(ITMF)</option>
+                        </select>
+                    ) : (
+                        <>
+                            {motivo}
+                            <button onClick={handleEditMotivo} className="edit-button">
+                                <FiEdit />
+                            </button>
+                        </>
+                    )}
+                </p>
                 <p><strong>Valor Total:</strong> {faturamento.valorTotal}</p>
                 <p>
                     <strong>
