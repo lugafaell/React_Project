@@ -6,6 +6,7 @@ import PedidoPage from './components/pedidos/PedidoPage/PedidoPage';
 import PedidosList from './components/pedidos/PedidosList/PedidosList';
 import PrivateRoute from './components/PrivateRoute';
 import FaturamentoList from './components/faturamento/FaturamentoList/FaturamentoList';
+import Cadastro from './components/Cadastro/cadastro';
 
 function App() {
   const username = Cookies.get('username');
@@ -37,6 +38,14 @@ function App() {
             element={
               <PrivateRoute>
                 <FaturamentoList />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/cadastro" 
+            element={
+              <PrivateRoute>
+                <Cadastro />
               </PrivateRoute>
             } 
           />

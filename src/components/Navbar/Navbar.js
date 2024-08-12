@@ -111,8 +111,9 @@ const Navbar = () => {
                             <a href="#cadastro" className="has-dropdown">Cadastro</a>
                             {dropdownOpen.cadastro && (
                                 <ul className="dropdown-menu dropdown-visible">
-                                    <li><a href="#sub-cadastro1">Sub Cadastro 1</a></li>
-                                    <li><a href="#sub-cadastro2">Sub Cadastro 2</a></li>
+                                    {location.pathname !== '/cadastro' && (
+                                        <li><a href="#!" onClick={() => handleNavigation('/cadastro')}>Registro</a></li>
+                                    )}
                                 </ul>
                             )}
                         </li>
