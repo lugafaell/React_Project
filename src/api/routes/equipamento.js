@@ -4,9 +4,9 @@ const Equipamento = require("../models/equipamento");
 const router = express.Router();
 
 router.post("/equipamentos", async (req, res) => {
-  const { nomeEquipamento, linhaEquipamento } = req.body;
+  const { nomeEquipamento, linhaEquipamento, codigoEquipamento } = req.body;
 
-  if (!nomeEquipamento || !linhaEquipamento) {
+  if (!nomeEquipamento || !linhaEquipamento || !codigoEquipamento) {
     return res
       .status(400)
       .json({ message: "Todos os campos são obrigatórios" });
@@ -16,6 +16,7 @@ router.post("/equipamentos", async (req, res) => {
     const novoEquipamento = new Equipamento({
       nomeEquipamento,
       linhaEquipamento,
+      codigoEquipamento,
     });
     await novoEquipamento.save();
     res.status(201).json({ message: "Item registrado com sucesso" });
@@ -25,12 +26,13 @@ router.post("/equipamentos", async (req, res) => {
 });
 
 router.get("/equipamentos", async (req, res) => {
-  const { nome, linha } = req.query;
+  const { nome, linha, code } = req.query;
 
   try {
       const query = {};
       if (nome) query.nomeEquipamento = nome;
       if (linha) query.linhaEquipamento = linha;
+      if (code) query.codigoEquipamento
 
       const equipamentos = await Equipamento.find(query);
       res.status(200).json(equipamentos);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../Navbar/Navbar';
 import './PedidoPage.css';
 import CustomAlert from '../../alert/CustomAlert';
@@ -25,12 +25,7 @@ const PedidosPage = () => {
 
     const [tipoProcedimentoStep2, setTipoProcedimentoStep2] = useState('');
 
-    const [equipamentos, setEquipamentos] = useState([
-        { id: 1, nome: 'Equipamento 1', checked: false, quantidade: 1 },
-        { id: 2, nome: 'Equipamento 2', checked: false, quantidade: 1 },
-        { id: 3, nome: 'Equipamento 3', checked: false, quantidade: 1 },
-        { id: 4, nome: 'Equipamento 4', checked: false, quantidade: 1 }
-    ]);
+    const [equipamentos, setEquipamentos] = useState([]);
 
     const [materiais, setMateriais] = useState([
         { id: 1, nome: 'Material 1', checked: false, quantidade: 1 },
@@ -51,60 +46,75 @@ const PedidosPage = () => {
         setStep(step - 1);
     };
 
+    const procedimentosPorLinha = {
+        GERAL: ['BARIATRICA', 'Outro Procedimento GERAL'],
+        VASCULAR: ['VASCULAR 1', 'VASCULAR 2'],
+    };
+
     const handleTipoProcedimentoChange = (e) => {
-        setTipoProcedimentoStep2(e.target.value);
-        setTipoProcedimento(e.target.value);
+        const procedimentoSelecionado = e.target.value;
+        setTipoProcedimentoStep2(procedimentoSelecionado);
+        setTipoProcedimento(procedimentoSelecionado);
     };
 
     const handleCheckboxChange = (id, type) => {
         if (type === 'equipamentos') {
-            setEquipamentos(equipamentos.map(equip => {
-                if (equip.id === id) {
-                    return { ...equip, checked: !equip.checked };
-                }
-                return equip;
-            }));
-        } else {
-            setMateriais(materiais.map(material => {
-                if (material.id === id) {
-                    return { ...material, checked: !material.checked };
-                }
-                return material;
-            }));
+            setEquipamentos(prevEquipamentos =>
+                prevEquipamentos.map(equip => 
+                    equip.id === id ? { ...equip, checked: !equip.checked } : equip
+                )
+            );
+        } else if (type === 'materiais') {
+            setMateriais(prevMateriais =>
+                prevMateriais.map(material => 
+                    material.id === id ? { ...material, checked: !material.checked } : material
+                )
+            );
         }
     };
 
     const handleSelectAllChange = (type) => {
         const newSelectAll = !selectAll;
         setSelectAll(newSelectAll);
+    
         if (type === 'equipamentos') {
-            setEquipamentos(equipamentos.map(equip => ({ ...equip, checked: newSelectAll })));
-        } else {
-            setMateriais(materiais.map(material => ({ ...material, checked: newSelectAll })));
+            setEquipamentos(prevEquipamentos =>
+                prevEquipamentos.map(equip => ({
+                    ...equip,
+                    checked: newSelectAll,
+                    quantidade: newSelectAll ? 1 : equip.quantidade
+                }))
+            );
+        } else if (type === 'materiais') {
+            setMateriais(prevMateriais =>
+                prevMateriais.map(material => ({
+                    ...material,
+                    checked: newSelectAll,
+                    quantidade: newSelectAll ? 1 : material.quantidade
+                }))
+            );
         }
     };
 
     const handleQuantityChange = (id, type, value) => {
         if (type === 'equipamentos') {
-            setEquipamentos(equipamentos.map(equip => {
-                if (equip.id === id) {
-                    return { ...equip, quantidade: value };
-                }
-                return equip;
-            }));
-        } else {
-            setMateriais(materiais.map(material => {
-                if (material.id === id) {
-                    return { ...material, quantidade: value };
-                }
-                return material;
-            }));
+            setEquipamentos(prevEquipamentos =>
+                prevEquipamentos.map(equip => 
+                    equip.id === id ? { ...equip, quantidade: value } : equip
+                )
+            );
+        } else if (type === 'materiais') {
+            setMateriais(prevMateriais =>
+                prevMateriais.map(material => 
+                    material.id === id ? { ...material, quantidade: value } : material
+                )
+            );
         }
     };
 
     const handleSubmit = async () => {
         const selectedEquipamentos = equipamentos.filter(equip => equip.checked).map(equip => ({
-            nome: equip.nome,
+            nome: equip.nomeEquipamento + " - CÓD:" + equip.codigoEquipamento,
             quantidade: equip.quantidade,
         }));
         const selectedMateriais = materiais.filter(material => material.checked).map(material => ({
@@ -150,6 +160,23 @@ const PedidosPage = () => {
             setAlert({ message: "Erro ao enviar o pedido", type: 'error', visible: true });
         }
     };
+
+    useEffect(() => {
+        if (linha) {
+            axios.get('http://localhost:8080/equipamento/equipamentos', { params: { linha } })
+                .then(response => {
+                    const equipamentosComQuantidade = response.data.map(equip => ({
+                        ...equip,
+                        checked: false,
+                        quantidade: 1
+                    }));
+                    setEquipamentos(equipamentosComQuantidade);
+                })
+                .catch(error => {
+                    console.error("Erro ao obter equipamentos:", error);
+                });
+        }
+    }, [linha]);
 
     return (
         <div className={`main-container step-${step}`}>
@@ -233,19 +260,23 @@ const PedidosPage = () => {
                                             <label>Linha</label>
                                             <select value={linha} onChange={(e) => setLinha(e.target.value)}>
                                                 <option value="">Selecione...</option>
-                                                <option value="Linha 1">Linha 1</option>
+                                                <option value="GERAL">GERAL</option>
+                                                <option value="VASCULAR">VASCULAR</option>
                                             </select>
                                         </div>
                                         <div className="campo">
                                             <label>Tipo do Procedimento</label>
                                             <select value={tipoProcedimentoStep2} onChange={handleTipoProcedimentoChange}>
                                                 <option value="">Selecione...</option>
-                                                <option value="procedimento1">Procedimento 1</option>
-                                                <option value="procedimento2">Procedimento 2</option>
+                                                {procedimentosPorLinha[linha]?.map((procedimento) => (
+                                                    <option key={procedimento} value={procedimento}>
+                                                        {procedimento}
+                                                    </option>
+                                                ))}
                                             </select>
                                         </div>
                                     </div>
-                                    {tipoProcedimento && (
+                                    {tipoProcedimentoStep2 && (
                                         <div className="tabs-container">
                                             <div className="tabs">
                                                 <button
@@ -268,7 +299,7 @@ const PedidosPage = () => {
                                                             <thead>
                                                                 <tr>
                                                                     <th>
-                                                                    <CustomCheckbox
+                                                                        <CustomCheckbox
                                                                             checked={selectAll}
                                                                             onChange={() => handleSelectAllChange('equipamentos')}
                                                                         />
@@ -280,15 +311,15 @@ const PedidosPage = () => {
                                                             </thead>
                                                             <tbody>
                                                                 {equipamentos.map(equip => (
-                                                                    <tr key={equip.id}>
+                                                                    <tr key={equip.id}> {/* Verifique se equip.id é único */}
                                                                         <td>
                                                                             <CustomCheckbox
                                                                                 checked={equip.checked}
                                                                                 onChange={() => handleCheckboxChange(equip.id, 'equipamentos')}
                                                                             />
                                                                         </td>
-                                                                        <td>{equip.nome}</td>
-                                                                        <td>{equip.id}</td>
+                                                                        <td>{equip.nomeEquipamento}</td>
+                                                                        <td>{equip.codigoEquipamento}</td>
                                                                         <td>
                                                                             {equip.checked && (
                                                                                 <input
@@ -311,7 +342,7 @@ const PedidosPage = () => {
                                                             <thead>
                                                                 <tr>
                                                                     <th>
-                                                                    <CustomCheckbox
+                                                                        <CustomCheckbox
                                                                             checked={selectAll}
                                                                             onChange={() => handleSelectAllChange('materiais')}
                                                                         />
@@ -323,9 +354,9 @@ const PedidosPage = () => {
                                                             </thead>
                                                             <tbody>
                                                                 {materiais.map(material => (
-                                                                    <tr key={material.id}>
+                                                                    <tr key={material.id}> {/* Verifique se material.id é único */}
                                                                         <td>
-                                                                        <CustomCheckbox
+                                                                            <CustomCheckbox
                                                                                 checked={material.checked}
                                                                                 onChange={() => handleCheckboxChange(material.id, 'materiais')}
                                                                             />
@@ -368,7 +399,7 @@ const PedidosPage = () => {
                 </div>
             </div>
             {alert.visible && (
-                <CustomAlert 
+                <CustomAlert
                     message={alert.message}
                     type={alert.type}
                     onClose={() => setAlert({ ...alert, visible: false })}
