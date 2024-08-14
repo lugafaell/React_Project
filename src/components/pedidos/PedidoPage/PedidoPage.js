@@ -3,6 +3,7 @@ import Navbar from '../../Navbar/Navbar';
 import './PedidoPage.css';
 import CustomAlert from '../../alert/CustomAlert';
 import CustomCheckbox from '../../checkbox/CustomCheckbox';
+import Select from 'react-select';
 import axios from 'axios';
 
 const PedidosPage = () => {
@@ -26,6 +27,68 @@ const PedidosPage = () => {
     const [tipoProcedimentoStep2, setTipoProcedimentoStep2] = useState('');
 
     const [equipamentos, setEquipamentos] = useState([]);
+
+    const options = [
+        { value: 'Medico 1', label: 'Medico 1' },
+        { value: 'Medico 2', label: 'Medico 2' },
+    ];
+
+    const customStyles = {
+        control: (provided, state) => ({
+          ...provided,
+          padding: '-4px 10px',
+          border: 'none',
+          backgroundColor: '#4CAF50',
+          borderBottom: state.isFocused ? '2px solid #030303' : '2px solid #ffffff',
+          borderRadius: '0px',
+          width: '100%',
+          height: '40px',
+          boxSizing: 'border-box',
+          color: 'white',
+          boxShadow: 'none',
+          fontSize: '14px',
+          lineHeight: 'normal',
+          '&:hover': {
+            borderBottom: state.isFocused ? '2px solid #030303' : '2px solid #ffffff',
+          },
+        }),
+        singleValue: (provided) => ({
+          ...provided,
+          color: 'white',
+          fontSize: '14px',
+          marginTop: '-11px'
+        }),
+        placeholder: (provided) => ({
+          ...provided,
+          color: '#ffffff',
+          fontSize: '14px',
+          paddingTop: '0px',
+          marginTop: '-11px'
+        }),
+        dropdownIndicator: (provided) => ({
+          ...provided,
+          color: 'white',
+          padding: '0px 10px',
+          marginTop: '-11px',
+        }),
+        indicatorSeparator: () => ({
+          display: 'none',
+        }),
+        menu: (provided) => ({
+          ...provided,
+          backgroundColor: '#ffffff',
+          color: 'white',
+        }),
+        option: (provided, state) => ({
+          ...provided,
+          backgroundColor: state.isSelected ? 'white' : state.isFocused ? '#5ec75f' : '#ffffff',
+          color: 'black',
+          '&:hover': {
+            backgroundColor: '#5ec75f',
+            color: '#ffffff'
+          },
+        }),
+      };
 
     const [materiais, setMateriais] = useState([
         { id: 1, nome: 'Material 1', checked: false, quantidade: 1 },
@@ -230,13 +293,17 @@ const PedidosPage = () => {
                                         </div>
                                     </div>
                                     <div className="linha-campos">
-                                        <div className="campo">
-                                            <label>Médico</label>
-                                            <select value={medico} onChange={(e) => setMedico(e.target.value)}>
-                                                <option value="">Selecione...</option>
-                                                <option value="Medico 1">Medico 1</option>
-                                            </select>
-                                        </div>
+                                    <div className="campo">
+  <label>Médico</label>
+  <Select 
+    value={options.find(option => option.value === medico)}
+    onChange={(selectedOption) => setMedico(selectedOption ? selectedOption.value : '')}
+    options={options}
+    placeholder="Selecione..."
+    styles={customStyles}
+    isSearchable
+  />
+</div>
                                         <div className="campo">
                                             <label>Nome do Paciente</label>
                                             <input type="text" placeholder="Nome do Paciente" value={nomePaciente} onChange={(e) => setNomePaciente(e.target.value)} />

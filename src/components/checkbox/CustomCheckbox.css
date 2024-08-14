@@ -17,6 +17,11 @@
     position: relative;
 }
 
+.custom-checkbox:focus{
+    border-bottom: 3px solid #ffffff;
+}
+
+
 .custom-checkbox:checked {
     background-color: transparent;
     border: 3px solid white;

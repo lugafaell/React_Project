@@ -137,10 +137,6 @@ input:focus, select:focus {
     border-bottom: 2px solid #030303;
 }
 
-input:focus, checkbox:focus {
-    border-bottom: 3px solid #ffffff;
-}
-
 select option {
     background-color: white;
     color: black;
