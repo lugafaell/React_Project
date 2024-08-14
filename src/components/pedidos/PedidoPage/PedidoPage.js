@@ -12,6 +12,7 @@ const PedidosPage = () => {
     const [tipoProcedimento, setTipoProcedimento] = useState('');
     const [selectAll, setSelectAll] = useState(false);
     const [activeTab, setActiveTab] = useState('equipamentos');
+    const [options, setOptions] = useState([]);
 
     const [hospital, setHospital] = useState('');
     const [linha, setLinha] = useState('');
@@ -28,67 +29,62 @@ const PedidosPage = () => {
 
     const [equipamentos, setEquipamentos] = useState([]);
 
-    const options = [
-        { value: 'Medico 1', label: 'Medico 1' },
-        { value: 'Medico 2', label: 'Medico 2' },
-    ];
-
     const customStyles = {
         control: (provided, state) => ({
-          ...provided,
-          padding: '-4px 10px',
-          border: 'none',
-          backgroundColor: '#4CAF50',
-          borderBottom: state.isFocused ? '2px solid #030303' : '2px solid #ffffff',
-          borderRadius: '0px',
-          width: '100%',
-          height: '40px',
-          boxSizing: 'border-box',
-          color: 'white',
-          boxShadow: 'none',
-          fontSize: '14px',
-          lineHeight: 'normal',
-          '&:hover': {
+            ...provided,
+            padding: '-4px 10px',
+            border: 'none',
+            backgroundColor: '#4CAF50',
             borderBottom: state.isFocused ? '2px solid #030303' : '2px solid #ffffff',
-          },
+            borderRadius: '0px',
+            width: '100%',
+            height: '40px',
+            boxSizing: 'border-box',
+            color: 'white',
+            boxShadow: 'none',
+            fontSize: '14px',
+            lineHeight: 'normal',
+            '&:hover': {
+                borderBottom: state.isFocused ? '2px solid #030303' : '2px solid #ffffff',
+            },
         }),
         singleValue: (provided) => ({
-          ...provided,
-          color: 'white',
-          fontSize: '14px',
-          marginTop: '-11px'
+            ...provided,
+            color: 'white',
+            fontSize: '14px',
+            marginTop: '-11px'
         }),
         placeholder: (provided) => ({
-          ...provided,
-          color: '#ffffff',
-          fontSize: '14px',
-          paddingTop: '0px',
-          marginTop: '-11px'
+            ...provided,
+            color: '#ffffff',
+            fontSize: '14px',
+            paddingTop: '0px',
+            marginTop: '-11px'
         }),
         dropdownIndicator: (provided) => ({
-          ...provided,
-          color: 'white',
-          padding: '0px 10px',
-          marginTop: '-11px',
+            ...provided,
+            color: 'white',
+            padding: '0px 10px',
+            marginTop: '-11px',
         }),
         indicatorSeparator: () => ({
-          display: 'none',
+            display: 'none',
         }),
         menu: (provided) => ({
-          ...provided,
-          backgroundColor: '#ffffff',
-          color: 'white',
+            ...provided,
+            backgroundColor: '#ffffff',
+            color: 'white',
         }),
         option: (provided, state) => ({
-          ...provided,
-          backgroundColor: state.isSelected ? 'white' : state.isFocused ? '#5ec75f' : '#ffffff',
-          color: 'black',
-          '&:hover': {
-            backgroundColor: '#5ec75f',
-            color: '#ffffff'
-          },
+            ...provided,
+            backgroundColor: state.isSelected ? 'white' : state.isFocused ? '#5ec75f' : '#ffffff',
+            color: 'black',
+            '&:hover': {
+                backgroundColor: '#5ec75f',
+                color: '#ffffff'
+            },
         }),
-      };
+    };
 
     const [materiais, setMateriais] = useState([
         { id: 1, nome: 'Material 1', checked: false, quantidade: 1 },
@@ -123,13 +119,13 @@ const PedidosPage = () => {
     const handleCheckboxChange = (id, type) => {
         if (type === 'equipamentos') {
             setEquipamentos(prevEquipamentos =>
-                prevEquipamentos.map(equip => 
+                prevEquipamentos.map(equip =>
                     equip.id === id ? { ...equip, checked: !equip.checked } : equip
                 )
             );
         } else if (type === 'materiais') {
             setMateriais(prevMateriais =>
-                prevMateriais.map(material => 
+                prevMateriais.map(material =>
                     material.id === id ? { ...material, checked: !material.checked } : material
                 )
             );
@@ -139,7 +135,7 @@ const PedidosPage = () => {
     const handleSelectAllChange = (type) => {
         const newSelectAll = !selectAll;
         setSelectAll(newSelectAll);
-    
+
         if (type === 'equipamentos') {
             setEquipamentos(prevEquipamentos =>
                 prevEquipamentos.map(equip => ({
@@ -162,13 +158,13 @@ const PedidosPage = () => {
     const handleQuantityChange = (id, type, value) => {
         if (type === 'equipamentos') {
             setEquipamentos(prevEquipamentos =>
-                prevEquipamentos.map(equip => 
+                prevEquipamentos.map(equip =>
                     equip.id === id ? { ...equip, quantidade: value } : equip
                 )
             );
         } else if (type === 'materiais') {
             setMateriais(prevMateriais =>
-                prevMateriais.map(material => 
+                prevMateriais.map(material =>
                     material.id === id ? { ...material, quantidade: value } : material
                 )
             );
@@ -241,6 +237,25 @@ const PedidosPage = () => {
         }
     }, [linha]);
 
+    useEffect(() => {
+        axios.get('http://localhost:8080/funcionario/funcionarios', {
+            params: {
+                cargo: 'MÉDICO'
+            }
+        })
+        .then(response => {
+            const funcionarios = response.data;
+            const medicoOptions = funcionarios.map(func => ({
+                value: func.nomeFuncionario,
+                label: func.nomeFuncionario
+            }));
+            setOptions(medicoOptions);
+        })
+        .catch(error => {
+            console.error('Erro ao obter os médicos:', error);
+        });
+    }, []);
+
     return (
         <div className={`main-container step-${step}`}>
             <Navbar />
@@ -294,16 +309,16 @@ const PedidosPage = () => {
                                     </div>
                                     <div className="linha-campos">
                                     <div className="campo">
-  <label>Médico</label>
-  <Select 
-    value={options.find(option => option.value === medico)}
-    onChange={(selectedOption) => setMedico(selectedOption ? selectedOption.value : '')}
-    options={options}
-    placeholder="Selecione..."
-    styles={customStyles}
-    isSearchable
-  />
-</div>
+            <label>Médico</label>
+            <Select
+                value={options.find(option => option.value === medico)}
+                onChange={(selectedOption) => setMedico(selectedOption ? selectedOption.value : '')}
+                options={options}
+                placeholder="Selecione..."
+                styles={customStyles}
+                isSearchable
+            />
+        </div>
                                         <div className="campo">
                                             <label>Nome do Paciente</label>
                                             <input type="text" placeholder="Nome do Paciente" value={nomePaciente} onChange={(e) => setNomePaciente(e.target.value)} />
@@ -378,7 +393,7 @@ const PedidosPage = () => {
                                                             </thead>
                                                             <tbody>
                                                                 {equipamentos.map(equip => (
-                                                                    <tr key={equip.id}> {/* Verifique se equip.id é único */}
+                                                                    <tr key={equip.id}>
                                                                         <td>
                                                                             <CustomCheckbox
                                                                                 checked={equip.checked}
@@ -421,7 +436,7 @@ const PedidosPage = () => {
                                                             </thead>
                                                             <tbody>
                                                                 {materiais.map(material => (
-                                                                    <tr key={material.id}> {/* Verifique se material.id é único */}
+                                                                    <tr key={material.id}>
                                                                         <td>
                                                                             <CustomCheckbox
                                                                                 checked={material.checked}
