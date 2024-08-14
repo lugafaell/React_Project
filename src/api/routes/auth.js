@@ -84,4 +84,14 @@ router.get("/users/:username", async (req, res) => {
   }
 });
 
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
+    res.status(500).json({ message: "Erro interno ao buscar usuários" });
+  }
+});
+
 module.exports = router;

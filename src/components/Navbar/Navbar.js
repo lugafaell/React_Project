@@ -121,9 +121,10 @@ const Navbar = () => {
                             <a href="#administrativo" className="has-dropdown">Administrativo</a>
                             {dropdownOpen.administrativo && (
                                 <ul className="dropdown-menu dropdown-visible">
-                                    <li><a href="#sub-administrativo1">Sub Administrativo 1</a></li>
-                                    <li><a href="#sub-administrativo2">Sub Administrativo 2</a></li>
-                                </ul>
+                                {location.pathname !== '/employees' && (
+                                    <li><a href="#!" onClick={() => handleNavigation('/employees')}>Funcionários</a></li>
+                                )}
+                            </ul>
                             )}
                         </li>
                     </ul>

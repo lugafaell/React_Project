@@ -1,0 +1,179 @@
+.employee-list-container {
+    padding: 20px;
+    margin: auto;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.employee-table th, .employee-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.employee-table th {
+    background-color: #f2f2f2;
+}
+
+.employee-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.employee-table tbody tr:nth-child(odd) {
+    background-color: #eaf4ea;
+}
+
+.employee-table tbody tr:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.employee-table tbody tr {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.employee-table tbody tr {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+    animation-delay: calc(0.1s * var(--animation-order));
+}
+
+.employee-table tbody tr, .edit-btn, .delete-btn {
+    transition: background-color 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.edit-btn{
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-btn i, .delete-btn i {
+    font-size: 14px;
+}
+
+.edit-btn:hover{
+    background-color: #535252;
+}
+
+.delete-btn:hover {
+    background-color: #830202;
+}
+
+.edit-btn svg, .delete-btn svg {
+    margin-right: 5px;
+}
+
+.password-field {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password-btn {
+    background: none;
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+.toggle-password-btn:hover {
+    color: #535252;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #ddd;
+}
+
+.pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagination .pagination-arrow {
+    font-size: 18px;
+}
+
+.pagination .pagination-number.active {
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.pagination .pagination-number:not(.active) {
+    color: #007bff;
+}
+
+.pagination button:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+.pagination button:focus {
+    outline: none;
+}
+
+.pagination-arrow {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-arrow:disabled {
+    opacity: 0.5;
+}
